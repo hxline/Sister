@@ -15,11 +15,13 @@ namespace ClientHostForm
 {
     public partial class Pesan : Form
     {
+        #region data user
         static BindingList<Members> ConnectedUsers = new BindingList<Members>();
         static BindingList<string> MessageDetail = new BindingList<string>();
+        #endregion
+
         private HubConnection connection;
         private IHubProxy hub;
-        private int loop;
         private string myId;
 
         public Pesan()
@@ -29,6 +31,27 @@ namespace ClientHostForm
             string url = @"http://192.168.10.62:5000";
             connection = new HubConnection(url);
             hub = connection.CreateHubProxy("MyHub");
+            var SyncHub = SynchronizationContext.Current;
+
+            #region Hapus daftar user offline
+            hub.On<string, string>("onUserDisconnected", (id, username) =>
+            {
+                this.Invoke((Action)(() =>
+                {
+                    SyncHub.Post(_ =>
+                    {
+                        var item = ConnectedUsers.FirstOrDefault(x => x.id == id);
+                        if (item != null)
+                        {
+                            ConnectedUsers.Remove(item);
+                            listOnline.DataSource = ConnectedUsers;
+                        }
+                    }, null);
+                }
+                ));
+            });
+            #endregion
+
             connection.Start().Wait();
             #endregion
         }
@@ -37,23 +60,38 @@ namespace ClientHostForm
         {
             #region Kirim pesan
             var SyncSend= SynchronizationContext.Current;
-            hub.On<string, string>("messageReceived", (username,message) =>
+            var hubmsg= hub.On<string, string>("messageReceived", (username,message) =>
                 {
-                    SyncSend.Post(_ =>
+                    SyncSend.Post(delegate
                         {
-                            //Ngakalin biar ga kirim pesan lebih dari 1
-                            //while (loop < 1)
-                            //{
-                            //    listPesan.Items.Add(message.ToString());
-                            //    loop++;
-                            //}
                             string pesan = username + " : " + message;
                             listPesan.Items.Add(pesan);
                         }, null);
                 });
+            
             #endregion
 
             hub.Invoke("SendMessageToAll", textUsername.Text, textPesan.Text).Wait();
+            hubmsg.Dispose();
+        }
+
+        public void SendPrivate()
+        {
+            #region Kirim pesan private
+
+            var Syncpriv = SynchronizationContext.Current;
+            var hubmsg = hub.On<string, string>("serndPrivateMessega", (username, message) =>
+            {
+                Syncpriv.Post(delegate
+                {
+                    string pesan = username + " : " + message;
+                    listPesan.Items.Add(pesan);
+                }, null);
+            });
+            #endregion
+
+            hub.Invoke("SendMessageToAll", textUsername.Text, textPesan.Text).Wait();
+            hubmsg.Dispose();
         }
 
         public void Load_user()
@@ -61,9 +99,9 @@ namespace ClientHostForm
             var Sync = SynchronizationContext.Current;
 
             #region User baru online
-            hub.On<string,string>("onNewUserConnected", (id, username) =>
+            var newUser = hub.On<string,string>("onNewUserConnected", (id, username) =>
             {
-                Sync.Post(_ =>
+                Sync.Post(delegate
                 {
                     ConnectedUsers.Add(new Members(username, id));
 
@@ -74,9 +112,9 @@ namespace ClientHostForm
             #endregion
 
             #region load daftar user
-            hub.On<string, string, string>("onConnected", (id,Ud,Md) =>
+            var connect = hub.On<string, string, string>("onConnected", (id,Ud,Md) =>
             {
-                Sync.Post(_ =>
+                Sync.Post(delegate
                 {
                     myId = id;
                     if (Ud != null)
@@ -88,29 +126,17 @@ namespace ClientHostForm
                             ConnectedUsers.Add(new Members(splUser[1], splUser[0]));
                         }
 
-                        var msgs = Md.Split('?');
-                        foreach(var msg in msgs)
+                        if (Md != null)
                         {
-                            var splMsg = msg.Split('|');
-                            string pesan = splMsg[0] + " : " + splMsg[1];
-                            listPesan.Items.Add(pesan);
+                            var msgs = Md.Split('?');
+                            foreach (var msg in msgs)
+                            {
+                                var splMsg = msg.Split('|');
+                                string pesan = splMsg[0] + " : " + splMsg[1];
+                                listPesan.Items.Add(pesan);
+                            }
                         }
 
-                        listOnline.DataSource = ConnectedUsers;
-                    }
-                }, null);
-            });
-            #endregion
-
-            #region Hapus daftar user
-            hub.On<string, string>("onDisconnected", (id, username) =>
-            {
-                Sync.Post(_ =>
-                {
-                    var item = ConnectedUsers.FirstOrDefault(x => x.id == id);
-                    if (item != null)
-                    {
-                        ConnectedUsers.Remove(item);
                         listOnline.DataSource = ConnectedUsers;
                     }
                 }, null);
@@ -123,16 +149,7 @@ namespace ClientHostForm
         #region Control
         private void buttonKirim_Click(object sender, EventArgs e)
         {
-            //string na = "AAA";
-            //foreach (var ci in ConnectedUsers)
-            //{
-            //    na = na + "|" + ci.id + "||" + ci.name;
-            //}
-
-            //MessageBox.Show(na);
             Send();
-            //Set loop ke 0 lagi
-            loop = 0;
         }
 
         private void buttonUsername_Click(object sender, EventArgs e)
@@ -152,9 +169,5 @@ namespace ClientHostForm
 
         #endregion
 
-        private void Pesan_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            MessageBox.Show("Tutup");
-        }
     }
 }

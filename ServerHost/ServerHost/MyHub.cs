@@ -79,6 +79,7 @@ namespace ServerHost
         }
         #endregion
 
+        #region PM
         public void SendPrivateMessage(string toUserId, string message)
         {
             string fromUserId = Context.ConnectionId;
@@ -96,6 +97,7 @@ namespace ServerHost
             }
 
         }
+        #endregion
 
         #region Tambah ke cache pesan
 
@@ -109,7 +111,7 @@ namespace ServerHost
 
         #endregion
 
-        #endregion
+        #endregion Procedure
 
         #region Task
         public override Task OnConnected()

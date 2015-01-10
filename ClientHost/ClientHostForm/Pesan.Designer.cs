@@ -93,7 +93,7 @@
             // 
             // buttonRefresh
             // 
-            this.buttonRefresh.Location = new System.Drawing.Point(296, 168);
+            this.buttonRefresh.Location = new System.Drawing.Point(250, 48);
             this.buttonRefresh.Name = "buttonRefresh";
             this.buttonRefresh.Size = new System.Drawing.Size(75, 23);
             this.buttonRefresh.TabIndex = 6;
@@ -121,7 +121,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(383, 304);
+            this.ClientSize = new System.Drawing.Size(383, 305);
             this.Controls.Add(this.buttonUsername);
             this.Controls.Add(this.textUsername);
             this.Controls.Add(this.buttonRefresh);
@@ -133,7 +133,6 @@
             this.Controls.Add(this.textPesan);
             this.Name = "Pesan";
             this.Text = "Pesan";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Pesan_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 
