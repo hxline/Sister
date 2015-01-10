@@ -41,6 +41,7 @@
             // 
             // textPesan
             // 
+            this.textPesan.Enabled = false;
             this.textPesan.Location = new System.Drawing.Point(12, 12);
             this.textPesan.Name = "textPesan";
             this.textPesan.Size = new System.Drawing.Size(100, 20);
@@ -48,6 +49,7 @@
             // 
             // buttonKirim
             // 
+            this.buttonKirim.Enabled = false;
             this.buttonKirim.Location = new System.Drawing.Point(127, 10);
             this.buttonKirim.Name = "buttonKirim";
             this.buttonKirim.Size = new System.Drawing.Size(75, 23);

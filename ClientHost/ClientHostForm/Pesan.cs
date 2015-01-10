@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Microsoft.AspNet.SignalR.Client;
 using System.Threading;
 using ClientHostForm.Models;
+using System.Text.RegularExpressions;
 
 namespace ClientHostForm
 {
@@ -23,6 +24,8 @@ namespace ClientHostForm
         private HubConnection connection;
         private IHubProxy hub;
         private string myId;
+        private string reg1 = "-z<zx>x-";
+        private string reg2 = "-z<xz>x-";
 
         public Pesan()
         {
@@ -32,7 +35,7 @@ namespace ClientHostForm
             connection = new HubConnection(url);
             hub = connection.CreateHubProxy("MyHub");
             var SyncHub = SynchronizationContext.Current;
-
+            
             #region Hapus daftar user offline
             hub.On<string, string>("onUserDisconnected", (id, username) =>
             {
@@ -53,26 +56,39 @@ namespace ClientHostForm
             #endregion
 
             connection.Start().Wait();
+
             #endregion
         }
 
         public void Send()
         {
             #region Kirim pesan
-            var SyncSend= SynchronizationContext.Current;
-            var hubmsg= hub.On<string, string>("messageReceived", (username,message) =>
+            var SyncSend = SynchronizationContext.Current;
+            var hubmsg = hub.On<string>("messageReceived", (Md) =>
+            {
+                SyncSend.Post(delegate
                 {
-                    SyncSend.Post(delegate
+                    if (Md != null)
+                    {
+                        var msgs = Regex.Split(Md, reg1);
+                        listPesan.Items.Clear();
+                        foreach (var msg in msgs)
                         {
-                            string pesan = username + " : " + message;
+                            var splMsg = Regex.Split(msg, reg2);
+                            string pesan = splMsg[0] + " : " + splMsg[1];
                             listPesan.Items.Add(pesan);
-                        }, null);
-                });
-            
-            #endregion
+                            
+                        }
 
+                        int maxList = listPesan.ClientSize.Height / listPesan.ItemHeight;
+                        listPesan.TopIndex = Math.Max(listPesan.Items.Count - maxList + 1, 0);
+                    }
+                }, null);
+            });
+
+            #endregion
             hub.Invoke("SendMessageToAll", textUsername.Text, textPesan.Text).Wait();
-            hubmsg.Dispose();
+
         }
 
         public void SendPrivate()
@@ -119,19 +135,19 @@ namespace ClientHostForm
                     myId = id;
                     if (Ud != null)
                     {
-                        var users = Ud.Split('?');
+                        var users = Regex.Split(Ud, reg1);
                         foreach (var user in users)
                         {
-                            var splUser = user.Split('|');
+                            var splUser = Regex.Split(user, reg2);
                             ConnectedUsers.Add(new Members(splUser[1], splUser[0]));
                         }
 
                         if (Md != null)
                         {
-                            var msgs = Md.Split('?');
+                            var msgs = Regex.Split(Md, reg1);
                             foreach (var msg in msgs)
                             {
-                                var splMsg = msg.Split('|');
+                                var splMsg = Regex.Split(msg, reg2);
                                 string pesan = splMsg[0] + " : " + splMsg[1];
                                 listPesan.Items.Add(pesan);
                             }
@@ -155,9 +171,11 @@ namespace ClientHostForm
         private void buttonUsername_Click(object sender, EventArgs e)
         {
             Load_user();
-            
+            Send();
             buttonUsername.Enabled = false;
             textUsername.Enabled = false;
+            textPesan.Enabled = true;
+            buttonKirim.Enabled = true;
         }
 
         private void listOnline_DoubleClick(object sender, EventArgs e)

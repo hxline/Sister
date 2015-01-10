@@ -19,6 +19,9 @@ namespace ServerHost
         private string Md = null;
         #endregion
 
+        private string reg1 = "-z<zx>x-";
+        private string reg2 = "-z<xz>x-";
+
         #region Procedures
 
         #region koneksi awal dari client ke server
@@ -37,11 +40,11 @@ namespace ServerHost
                     {
                         if (Ud != null)
                         {
-                            Ud = Ud + "?" + cu.ConnectionId + "|" + cu.UserName;
+                            Ud = Ud + reg1 + cu.ConnectionId + reg2 + cu.UserName;
                         }
                         else
                         {
-                            Ud = cu.ConnectionId + "|" + cu.UserName;
+                            Ud = cu.ConnectionId + reg2 + cu.UserName;
                         }
                     }
 
@@ -49,11 +52,11 @@ namespace ServerHost
                     {
                         if (Md != null)
                         {
-                            Md = Md + "?" + cm.UserName + "|" + cm.Message;
+                            Md = Md + reg1 + cm.UserName + reg2 + cm.Message;
                         }
                         else
                         {
-                            Md = cm.UserName + "|" + cm.Message;
+                            Md = cm.UserName + reg2 + cm.Message;
                         }
                     }
                 }
@@ -71,12 +74,30 @@ namespace ServerHost
         #region Kirim pesan kesemua
         public void SendMessageToAll(string userName, string message)
         {
-            // store last 100 messages in cache
-            AddMessageinCache(userName, message);
+            StringBuilder bul = new StringBuilder();
+            // cache pesan ke list
+            if (message.Length > 0)
+            {
+                AddMessageinCache(userName, message);
+            }
 
-            // Broad cast message
-            Clients.All.messageReceived(userName, message);
+            foreach (var cm in CurrentMessage)
+            {
+                if (Md != null)
+                {
+                    Md = Md + reg1 + cm.UserName + reg2 + cm.Message;
+                }
+                else
+                {
+                    Md = cm.UserName + reg2 + cm.Message;
+                }
+            }
+
+            Clients.All.messageReceived(Md);
         }
+
+        public void SendMessageToAll()
+        { }
         #endregion
 
         #region PM
@@ -106,12 +127,14 @@ namespace ServerHost
             CurrentMessage.Add(new MessageDetail { UserName = userName, Message = message });
 
             if (CurrentMessage.Count > 100)
+            {
                 CurrentMessage.RemoveAt(0);
+            }
         }
 
         #endregion
 
-        #endregion Procedure
+        #endregion Procedures
 
         #region Task
         public override Task OnConnected()

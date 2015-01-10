@@ -10,8 +10,8 @@
 
         public Members(string name, string id)
         {
-        _name = name;
-        _id = id;
+            _name = name;
+            _id = id;
         }
 
         public override string ToString()
