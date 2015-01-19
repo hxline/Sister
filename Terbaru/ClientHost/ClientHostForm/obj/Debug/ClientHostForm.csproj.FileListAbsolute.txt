@@ -1,0 +1,14 @@
+c:\users\handoyo\documents\visual studio 2013\Projects\ClientHost\ClientHostForm\bin\Debug\ClientHostForm.exe.config
+c:\users\handoyo\documents\visual studio 2013\Projects\ClientHost\ClientHostForm\bin\Debug\ClientHostForm.exe
+c:\users\handoyo\documents\visual studio 2013\Projects\ClientHost\ClientHostForm\bin\Debug\ClientHostForm.pdb
+c:\users\handoyo\documents\visual studio 2013\Projects\ClientHost\ClientHostForm\bin\Debug\Microsoft.AspNet.SignalR.Client.dll
+c:\users\handoyo\documents\visual studio 2013\Projects\ClientHost\ClientHostForm\bin\Debug\Newtonsoft.Json.dll
+c:\users\handoyo\documents\visual studio 2013\Projects\ClientHost\ClientHostForm\bin\Debug\Microsoft.AspNet.SignalR.Client.xml
+c:\users\handoyo\documents\visual studio 2013\Projects\ClientHost\ClientHostForm\bin\Debug\Newtonsoft.Json.xml
+c:\users\handoyo\documents\visual studio 2013\Projects\ClientHost\ClientHostForm\obj\Debug\ClientHostForm.csprojResolveAssemblyReference.cache
+c:\users\handoyo\documents\visual studio 2013\Projects\ClientHost\ClientHostForm\obj\Debug\ClientHostForm.Properties.Resources.resources
+c:\users\handoyo\documents\visual studio 2013\Projects\ClientHost\ClientHostForm\obj\Debug\ClientHostForm.csproj.GenerateResource.Cache
+c:\users\handoyo\documents\visual studio 2013\Projects\ClientHost\ClientHostForm\obj\Debug\ClientHostForm.exe
+c:\users\handoyo\documents\visual studio 2013\Projects\ClientHost\ClientHostForm\obj\Debug\ClientHostForm.pdb
+C:\Users\Handoyo\Documents\Visual Studio 2013\Projects\ClientHost\ClientHostForm\obj\Debug\ClientHostForm.Pesan.resources
+C:\Users\Handoyo\documents\visual studio 2013\Projects\ClientHost\ClientHostForm\obj\Debug\ClientHostForm.Pesan_Private.resources
