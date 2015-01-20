@@ -8,10 +8,10 @@ namespace ServerHost
     {
         static void Main(string[] args)
         {
-            string url = "http://192.168.10.62:5000";
+            string url = "http://localhost:8080";
             using (WebApp.Start(url))
             {
-                Console.WriteLine("Server running on {0}", url);
+                Console.WriteLine("Server berjalan di IP {0}", url);
                 Console.ReadLine();
             }
         }

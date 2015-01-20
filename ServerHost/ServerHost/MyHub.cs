@@ -10,15 +10,17 @@ namespace ServerHost
 {
     public class MyHub : Hub
     {
-
         #region Data Members
 
         static List<UserDetail> ConnectedUsers = new List<UserDetail>();
         static List<MessageDetail> CurrentMessage = new List<MessageDetail>();
+        static List<UserPrivateMessage> PrivateMessage = new List<UserPrivateMessage>();
+        
+        #endregion
+        
         private string Ud = null;
         private string Md = null;
-        #endregion
-
+        private string Pm = null;
         private string reg1 = "-z<zx>x-";
         private string reg2 = "-z<xz>x-";
 
@@ -48,21 +50,10 @@ namespace ServerHost
                         }
                     }
 
-                    foreach(var cm in CurrentMessage)
-                    {
-                        if (Md != null)
-                        {
-                            Md = Md + reg1 + cm.UserName + reg2 + cm.Message;
-                        }
-                        else
-                        {
-                            Md = cm.UserName + reg2 + cm.Message;
-                        }
-                    }
                 }
 
                 // Ngirim ke caller baru daftar user online
-                Clients.Caller.onConnected(id,Ud,Md);
+                Clients.Caller.onConnected(id,Ud,CurrentMessage);
 
                 // Ngirim ke semua client kecuali caller
                 Clients.AllExcept(id).onNewUserConnected(id, userName);
@@ -74,47 +65,54 @@ namespace ServerHost
         #region Kirim pesan kesemua
         public void SendMessageToAll(string userName, string message)
         {
-            StringBuilder bul = new StringBuilder();
             // cache pesan ke list
             if (message.Length > 0)
             {
                 AddMessageinCache(userName, message);
+                Console.WriteLine(userName + " mengirim pesan publik");
             }
 
-            foreach (var cm in CurrentMessage)
-            {
-                if (Md != null)
-                {
-                    Md = Md + reg1 + cm.UserName + reg2 + cm.Message;
-                }
-                else
-                {
-                    Md = cm.UserName + reg2 + cm.Message;
-                }
-            }
-
-            Clients.All.messageReceived(Md);
+            Clients.All.messageReceived(CurrentMessage);
         }
 
-        public void SendMessageToAll()
-        { }
         #endregion
 
-        #region PM
-        public void SendPrivateMessage(string toUserId, string message)
+        #region PM (Masih dalam percobaan)
+        public void SendPrivateMessage(string toConId, string message)
         {
-            string fromUserId = Context.ConnectionId;
+            string fromConId = Context.ConnectionId;
 
-            var toUser = ConnectedUsers.FirstOrDefault(x => x.ConnectionId == toUserId);
-            var fromUser = ConnectedUsers.FirstOrDefault(x => x.ConnectionId == fromUserId);
+            var toUser = ConnectedUsers.FirstOrDefault(x => x.ConnectionId == toConId);
+            var fromUser = ConnectedUsers.FirstOrDefault(x => x.ConnectionId == fromConId);
+
+            string DetailMsg = fromUser.ToString() + reg2 + message;
+
+            if (message.Length > 0)
+            {
+                AddMessageinCache(fromConId,toConId,DetailMsg);
+                Console.WriteLine(fromUser + " mengirim pesan private");
+            }
 
             if (toUser != null && fromUser != null)
             {
+                foreach (var pm in PrivateMessage)
+                {
+                    if (Pm != null)
+                    {
+                        Pm = Pm + reg1 + pm.message;
+                    }
+                    else
+                    {
+                        Pm = pm.message;
+                    }
+                }
+
                 // Ngirim ke client tertentu
-                Clients.Client(toUserId).sendPrivateMessage(fromUserId, fromUser.UserName, message);
+                Clients.Client(toConId).receivePrivateMessage(Pm);
+                Clients.Client(toConId).listPrivateMessage(Pm);
 
                 // Ngirim ke caller
-                Clients.Caller.sendPrivateMessage(toUserId, fromUser.UserName, message);
+                Clients.Caller.receivePrivateMessage(Pm);
             }
 
         }
@@ -129,6 +127,16 @@ namespace ServerHost
             if (CurrentMessage.Count > 100)
             {
                 CurrentMessage.RemoveAt(0);
+            }
+        }
+
+        private void AddMessageinCache(string fromConId, string toConId, string message)
+        {
+            PrivateMessage.Add(new UserPrivateMessage { fromConnectionId = fromConId, toConnectionId = toConId, message = message });
+
+            if (PrivateMessage.Count > 100)
+            {
+                PrivateMessage.RemoveAt(0);
             }
         }
 

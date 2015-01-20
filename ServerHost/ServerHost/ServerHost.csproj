@@ -75,6 +75,7 @@
     <Compile Include="CustomUserIdProvider.cs" />
     <Compile Include="Models\MessageDetail.cs" />
     <Compile Include="Models\UserDetail.cs" />
+    <Compile Include="Models\UserPrivateMessage.cs" />
     <Compile Include="MyHub.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

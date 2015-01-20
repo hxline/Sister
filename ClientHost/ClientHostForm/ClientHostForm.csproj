@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Models\Members.cs" />
     <Compile Include="Models\Messages.cs" />
+    <Compile Include="Models\UserDetail.cs" />
     <Compile Include="PesanPrivate.cs">
       <SubType>Form</SubType>
     </Compile>

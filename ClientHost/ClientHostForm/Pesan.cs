@@ -18,12 +18,13 @@ namespace ClientHostForm
     {
         #region data user
         static BindingList<Members> ConnectedUsers = new BindingList<Members>();
-        static BindingList<string> MessageDetail = new BindingList<string>();
+        static BindingList<Members> usersD = new BindingList<Members>();
         #endregion
 
         private HubConnection connection;
         private IHubProxy hub;
         private string myId;
+        private string toId;
         private string reg1 = "-z<zx>x-";
         private string reg2 = "-z<xz>x-";
 
@@ -31,7 +32,7 @@ namespace ClientHostForm
         {
             InitializeComponent();
             #region Koneksi
-            string url = @"http://192.168.10.62:5000";
+            string url = @"http://localhost:8080";
             connection = new HubConnection(url);
             hub = connection.CreateHubProxy("MyHub");
             var SyncHub = SynchronizationContext.Current;
@@ -91,23 +92,57 @@ namespace ClientHostForm
 
         }
 
+        public void TestList()
+        {
+            #region Kirim pesan
+            var SyncSend = SynchronizationContext.Current;
+            var hubmsg = hub.On<List<UserDetail>>("ListData", (Md) =>
+            {
+                SyncSend.Post(delegate
+                {
+                    listPesan.Items.Clear();
+                    foreach (var msg in Md)
+                    {
+                        usersD.Add(new Members(msg.ConnectionId, msg.UserName));
+                    }
+
+                    listBox1.DataSource = usersD;
+                }, null);
+            });
+
+            #endregion
+            hub.Invoke("ListTest").Wait();
+
+        }
+
         public void SendPrivate()
         {
             #region Kirim pesan private
 
             var Syncpriv = SynchronizationContext.Current;
-            var hubmsg = hub.On<string, string>("serndPrivateMessega", (username, message) =>
+            hub.On<string>("receivePrivateMessega", (message) =>
             {
                 Syncpriv.Post(delegate
                 {
-                    string pesan = username + " : " + message;
-                    listPesan.Items.Add(pesan);
+                    if (message != null)
+                    {
+                        var msgs = Regex.Split(message, reg1);
+                        listPesan.Items.Clear();
+                        foreach (var msg in msgs)
+                        {
+                            var splMsg = Regex.Split(msg, reg2);
+                            string pesan = splMsg[0] + " : " + splMsg[1];
+                            listIsiPM.Items.Add(pesan);
+                        }
+
+                        int maxList = listPesan.ClientSize.Height / listPesan.ItemHeight;
+                        listPesan.TopIndex = Math.Max(listPesan.Items.Count - maxList + 1, 0);
+                    }
                 }, null);
             });
             #endregion
 
-            hub.Invoke("SendMessageToAll", textUsername.Text, textPesan.Text).Wait();
-            hubmsg.Dispose();
+            hub.Invoke("SendPrivateMessage", textUsername.Text, textPM.Text).Wait();
         }
 
         public void Load_user()
@@ -186,6 +221,11 @@ namespace ClientHostForm
         }
 
         #endregion
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            TestList();
+        }
 
     }
 }
