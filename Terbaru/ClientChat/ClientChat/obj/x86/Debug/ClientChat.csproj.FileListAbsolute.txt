@@ -17,3 +17,11 @@ c:\users\handoyo\documents\visual studio 2013\Projects\ClientChat\ClientChat\bin
 c:\users\handoyo\documents\visual studio 2013\Projects\ClientChat\ClientChat\bin\Debug\Microsoft.AspNet.SignalR.Client.xml
 c:\users\handoyo\documents\visual studio 2013\Projects\ClientChat\ClientChat\bin\Debug\Newtonsoft.Json.xml
 c:\users\handoyo\documents\visual studio 2013\Projects\ClientChat\ClientChat\obj\x86\Debug\ClientChat.Chatting.resources
+C:\Users\smoy\Documents\C#\ceut\Sister\Terbaru\ClientChat\ClientChat\bin\Debug\ClientChat.exe.config
+C:\Users\smoy\Documents\C#\ceut\Sister\Terbaru\ClientChat\ClientChat\obj\x86\Debug\ClientChat.exe
+C:\Users\smoy\Documents\C#\ceut\Sister\Terbaru\ClientChat\ClientChat\obj\x86\Debug\ClientChat.pdb
+C:\Users\smoy\Documents\C#\ceut\Sister\Terbaru\ClientChat\ClientChat\obj\x86\Debug\ClientChat.csprojResolveAssemblyReference.cache
+C:\Users\smoy\Documents\C#\ceut\Sister\Terbaru\ClientChat\ClientChat\obj\x86\Debug\ClientChat.Chatting.resources
+C:\Users\smoy\Documents\C#\ceut\Sister\Terbaru\ClientChat\ClientChat\obj\x86\Debug\ClientChat.Login.resources
+C:\Users\smoy\Documents\C#\ceut\Sister\Terbaru\ClientChat\ClientChat\obj\x86\Debug\ClientChat.Properties.Resources.resources
+C:\Users\smoy\Documents\C#\ceut\Sister\Terbaru\ClientChat\ClientChat\obj\x86\Debug\ClientChat.csproj.GenerateResource.Cache

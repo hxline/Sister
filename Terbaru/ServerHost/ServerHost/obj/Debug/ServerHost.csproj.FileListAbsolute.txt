@@ -22,3 +22,6 @@ C:\Users\Handoyo\Documents\Visual Studio 2013\Projects\ServerHost\ServerHost\bin
 C:\Users\Handoyo\Documents\Visual Studio 2013\Projects\ServerHost\ServerHost\obj\Debug\ServerHost.exe
 C:\Users\Handoyo\Documents\Visual Studio 2013\Projects\ServerHost\ServerHost\obj\Debug\ServerHost.pdb
 C:\Users\Handoyo\Documents\Visual Studio 2013\Projects\ServerHost\ServerHost\obj\Debug\ServerHost.csprojResolveAssemblyReference.cache
+C:\Users\smoy\Documents\C#\ceut\Sister\Terbaru\ServerHost\ServerHost\bin\Debug\ServerHost.exe.config
+C:\Users\smoy\Documents\C#\ceut\Sister\Terbaru\ServerHost\ServerHost\obj\Debug\ServerHost.exe
+C:\Users\smoy\Documents\C#\ceut\Sister\Terbaru\ServerHost\ServerHost\obj\Debug\ServerHost.pdb
