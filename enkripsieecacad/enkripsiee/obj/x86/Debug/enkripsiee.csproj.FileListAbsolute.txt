@@ -1,0 +1,8 @@
+C:\Users\smoy\Documents\C#\enkripsiee\enkripsiee\bin\Debug\enkripsiee.exe
+C:\Users\smoy\Documents\C#\enkripsiee\enkripsiee\bin\Debug\enkripsiee.pdb
+C:\Users\smoy\Documents\C#\enkripsiee\enkripsiee\obj\x86\Debug\enkripsiee.Form1.resources
+C:\Users\smoy\Documents\C#\enkripsiee\enkripsiee\obj\x86\Debug\enkripsiee.Properties.Resources.resources
+C:\Users\smoy\Documents\C#\enkripsiee\enkripsiee\obj\x86\Debug\enkripsiee.csproj.GenerateResource.Cache
+C:\Users\smoy\Documents\C#\enkripsiee\enkripsiee\obj\x86\Debug\enkripsiee.exe
+C:\Users\smoy\Documents\C#\enkripsiee\enkripsiee\obj\x86\Debug\enkripsiee.pdb
+C:\Users\smoy\Documents\C#\enkripsiee\enkripsiee\obj\x86\Debug\enkripsiee.csprojResolveAssemblyReference.cache
