@@ -47,7 +47,7 @@
             // 
             // buttonDeskripsi
             // 
-            this.buttonDeskripsi.Location = new System.Drawing.Point(574, 54);
+            this.buttonDeskripsi.Location = new System.Drawing.Point(254, 196);
             this.buttonDeskripsi.Name = "buttonDeskripsi";
             this.buttonDeskripsi.Size = new System.Drawing.Size(75, 23);
             this.buttonDeskripsi.TabIndex = 1;
@@ -64,14 +64,14 @@
             // 
             // textBoxEnkripsi
             // 
-            this.textBoxEnkripsi.Location = new System.Drawing.Point(312, 134);
+            this.textBoxEnkripsi.Location = new System.Drawing.Point(59, 160);
             this.textBoxEnkripsi.Name = "textBoxEnkripsi";
             this.textBoxEnkripsi.Size = new System.Drawing.Size(100, 20);
             this.textBoxEnkripsi.TabIndex = 3;
             // 
             // textBoxDeskrip
             // 
-            this.textBoxDeskrip.Location = new System.Drawing.Point(490, 134);
+            this.textBoxDeskrip.Location = new System.Drawing.Point(-5, 199);
             this.textBoxDeskrip.Name = "textBoxDeskrip";
             this.textBoxDeskrip.Size = new System.Drawing.Size(215, 20);
             this.textBoxDeskrip.TabIndex = 4;

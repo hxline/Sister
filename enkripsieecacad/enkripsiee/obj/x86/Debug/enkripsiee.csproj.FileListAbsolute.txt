@@ -6,3 +6,11 @@ C:\Users\smoy\Documents\C#\enkripsiee\enkripsiee\obj\x86\Debug\enkripsiee.csproj
 C:\Users\smoy\Documents\C#\enkripsiee\enkripsiee\obj\x86\Debug\enkripsiee.exe
 C:\Users\smoy\Documents\C#\enkripsiee\enkripsiee\obj\x86\Debug\enkripsiee.pdb
 C:\Users\smoy\Documents\C#\enkripsiee\enkripsiee\obj\x86\Debug\enkripsiee.csprojResolveAssemblyReference.cache
+D:\Github\Sister\enkripsieecacad\enkripsiee\obj\x86\Debug\enkripsiee.exe
+D:\Github\Sister\enkripsieecacad\enkripsiee\obj\x86\Debug\enkripsiee.pdb
+D:\Github\Sister\enkripsieecacad\enkripsiee\bin\Debug\enkripsiee.exe
+D:\Github\Sister\enkripsieecacad\enkripsiee\bin\Debug\enkripsiee.pdb
+D:\Github\Sister\enkripsieecacad\enkripsiee\obj\x86\Debug\enkripsiee.csprojResolveAssemblyReference.cache
+D:\Github\Sister\enkripsieecacad\enkripsiee\obj\x86\Debug\enkripsiee.Form1.resources
+D:\Github\Sister\enkripsieecacad\enkripsiee\obj\x86\Debug\enkripsiee.Properties.Resources.resources
+D:\Github\Sister\enkripsieecacad\enkripsiee\obj\x86\Debug\enkripsiee.csproj.GenerateResource.Cache
