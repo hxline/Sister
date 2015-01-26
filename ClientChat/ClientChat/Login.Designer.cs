@@ -50,6 +50,7 @@
             // radTextUsername
             // 
             this.radTextUsername.Location = new System.Drawing.Point(332, 123);
+            this.radTextUsername.MaxLength = 6;
             this.radTextUsername.Name = "radTextUsername";
             this.radTextUsername.Size = new System.Drawing.Size(125, 20);
             this.radTextUsername.TabIndex = 0;

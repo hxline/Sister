@@ -24,15 +24,22 @@ namespace ClientChat
 
         private void radButtonLogin_Click(object sender, EventArgs e)
         {
-            Chatting chatting = new Chatting(radTextUsername.Text);
-            this.Hide();
-            try
+            if (radTextUsername.Text != "")
             {
-                chatting.ShowDialog();
+                Chatting chatting = new Chatting(radTextUsername.Text);
+                this.Hide();
+                try
+                {
+                    chatting.ShowDialog();
+                }
+                catch
+                { }
+                this.Close();
             }
-            catch
-            { }
-            this.Close();
+            else
+            {
+                MessageBox.Show("Nama ID tidak boleh kosong.", "Gagal", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

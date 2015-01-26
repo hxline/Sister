@@ -14,7 +14,6 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Media;
-using System.Security.Cryptography;
 
 namespace ClientChat
 {
@@ -30,18 +29,20 @@ namespace ClientChat
         public static extern bool ReleaseCapture();
         #endregion
 
-        #region variabel enkripsi
-        UnicodeEncoding ByteConverter = new UnicodeEncoding();
-        RSACryptoServiceProvider RSA = new RSACryptoServiceProvider();
-        private byte[] plaintext;
-        private byte[] encryptedtext;
+        #region enkripsi
+        private Encrypted encrypted = new Encrypted();
         #endregion
 
-
         #region data user
+
         static BindingList<Members> ConnectedUsers = new BindingList<Members>();
         static BindingList<MessageDetail> messageDetail = new BindingList<MessageDetail>();
-        
+
+        #endregion
+
+        #region Input
+        private int KeyCount = 47;
+        private bool Backspace;
         #endregion
 
         private HubConnection connection;
@@ -59,6 +60,7 @@ namespace ClientChat
             player = new SoundPlayer("notif.wav");
             player2 = new SoundPlayer("online.wav");
             Un = loginname;
+            labelUsername.Text = Un;
             #region Koneksi
             string url = @"http://localhost:8080";
             connection = new HubConnection(url);
@@ -99,65 +101,6 @@ namespace ClientChat
             #endregion
         }
 
-        #region Enkripsi
-        static public byte[] Encrypt(byte[] DataToEncrypt, RSAParameters KeyInfo, bool OAEP)
-        {
-            try
-            {
-                byte[] encryptedData;
-                //Create a new instance of RSACryptoServiceProvider. 
-                using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
-                {
-
-                    //Import the RSA Key information. This only needs 
-                    //toinclude the public key information.
-                    RSA.ImportParameters(KeyInfo);
-
-                    //Encrypt the passed byte array and specify OAEP padding.   
-                    //OAEP padding is only available on Microsoft Windows XP or 
-                    //later.  
-                    encryptedData = RSA.Encrypt(DataToEncrypt, OAEP);
-                }
-                return encryptedData;
-            }
-            //Catch and display a CryptographicException   
-            //to the console. 
-            catch (CryptographicException e)
-            {
-                Console.WriteLine(e.Message);
-
-                return null;
-            }
-        }
-        static private byte[] Decrypt(byte[] DataToDecrypt, RSAParameters KeyInfo, bool OAEP)
-        {
-            try
-            {
-                byte[] decryptedData;
-                //Create a new instance of RSACryptoServiceProvider. 
-                using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
-                {
-                    //Import the RSA Key information. This needs 
-                    //to include the private key information.
-                    RSA.ImportParameters(KeyInfo);
-
-                    //Decrypt the passed byte array and specify OAEP padding.   
-                    //OAEP padding is only available on Microsoft Windows XP or 
-                    //later.  
-                    decryptedData = RSA.Decrypt(DataToDecrypt, OAEP);
-                }
-                return decryptedData;
-            }
-            //Catch and display a CryptographicException   
-            //to the console. 
-            catch (CryptographicException e)
-            {
-                Console.WriteLine(e.Message);
-                return null;
-            }
-        }
-        #endregion
-
         public void Send()
         {
             #region Kirim pesan
@@ -173,7 +116,8 @@ namespace ClientChat
                             messageDetail.Clear();
                             foreach (var msg in Md)
                             {
-                                messageDetail.Add(new MessageDetail(msg.UserName, msg.Message));
+                                string chipertext = encrypted.decrypt(msg.Message);
+                                messageDetail.Add(new MessageDetail(msg.UserName, chipertext));
                             }
 
                             radListMessages.DataSource = messageDetail;
@@ -181,15 +125,24 @@ namespace ClientChat
                             int maxList = radListMessages.ClientSize.Height / radListMessages.ItemHeight;
                             radListMessages.TopIndex = Math.Max(radListMessages.Items.Count - maxList + 1, 0);
 
-                            if (radCheckNotif.Checked)
-                            {
-                                player.Play();
-                            }
+                            
                         }
                     }, null);
                 });
 
-                hub.Invoke("SendMessageToAll", Un, radTextMessage.Text).Wait();
+                if (radTextMessage.Text != null && !string.IsNullOrWhiteSpace(radTextMessage.Text))
+                {
+                    if (radCheckNotif.Checked)
+                    {
+                        player.Play();
+                    }
+                    string plaintext = encrypted.encrypt(radTextMessage.Text);
+                    hub.Invoke("SendMessageToAll", Un, plaintext).Wait();
+                }
+                else
+                {
+                    hub.Invoke("SendMessageToAll", Un, radTextMessage.Text).Wait();
+                }
             }
             catch
             {
@@ -240,7 +193,8 @@ namespace ClientChat
                             {
                                 foreach (var msg in Md)
                                 {
-                                    messageDetail.Add(new MessageDetail(msg.UserName, msg.Message));
+                                    string chipertext = encrypted.decrypt(msg.Message);
+                                    messageDetail.Add(new MessageDetail(msg.UserName, chipertext.ToLower()));
                                 }
                             }
 
@@ -265,9 +219,18 @@ namespace ClientChat
         }
 
         #region Control
-        private void radButtonSend_Click(object sender, EventArgs e)
+
+        public void SendCtrl()
         {
             Send();
+            radTextMessage.Clear();
+            KeyCount = 47;
+            labelKeyCount.Text = KeyCount.ToString();
+        }
+
+        private void radButtonSend_Click(object sender, EventArgs e)
+        {
+            SendCtrl();
         }
 
         private void Chatting_MouseDown(object sender, MouseEventArgs e)
@@ -283,6 +246,98 @@ namespace ClientChat
         {
             Application.Exit();
         }
-        #endregion  
+
+        #region Slide form
+        private void radButtonSlide_Click(object sender, EventArgs e)
+        {
+            if (this.Width >= 900)
+            {
+                timerSlideLeft.Enabled = true;
+            }
+            else
+            {
+                timerSlide.Enabled = true;
+            }
+        }
+
+        private void timerSlide_Tick(object sender, EventArgs e)
+        {
+            if (this.Width >= 900)
+            {
+                timerSlide.Enabled = false;
+                radButtonSlide.Text = "<";
+            }
+            else
+            {
+                this.Width += 10;
+            }
+        }
+
+        private void timerSlideLeft_Tick(object sender, EventArgs e)
+        {
+            if (this.Width <= 570)
+            {
+                timerSlideLeft.Enabled = false;
+                radButtonSlide.Text = ">";
+            }
+            else
+            {
+                this.Width -= 10;
+            }
+        }
+        #endregion
+
+        #region Batas Inputan
+        private void radTextMessage_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Backspace
+            if (e.KeyCode == Keys.Back)
+            {
+                Backspace = true;
+            }
+            // enter
+            else if(e.KeyCode == Keys.Enter)
+            {
+                SendCtrl();
+            }
+            else
+            {
+                Backspace = false;
+            }
+        }
+
+        private void radTextMessage_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Char pressedKey = e.KeyChar;
+            if (Char.IsLetterOrDigit(pressedKey) || Char.IsSeparator(pressedKey) || Char.IsPunctuation(pressedKey) || Char.IsSymbol(pressedKey) || Backspace == true)
+            {
+                // input yang masuk
+                e.Handled = false;
+                if (Backspace == true && KeyCount <= 47)
+                {
+                    if (KeyCount < 47)
+                    {
+                        KeyCount += 1;
+                    }
+                }
+                else
+                {
+                    if (KeyCount >= 0 && KeyCount >0)
+                    {
+                        KeyCount -= 1;
+                    }
+                }
+                
+                labelKeyCount.Text = KeyCount.ToString();
+            }
+            else
+            {
+                // input ga masuk
+                e.Handled = true;
+            }
+        }
+        #endregion
+
+        #endregion
     }
 }
