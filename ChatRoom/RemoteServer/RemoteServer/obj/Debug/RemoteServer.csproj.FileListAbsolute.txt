@@ -1,0 +1,10 @@
+C:\Users\Handoyo\Downloads\Compressed\chatroom-new\ChatRoom\RemoteServer\RemoteServer\bin\Debug\RemoteServer.exe
+C:\Users\Handoyo\Downloads\Compressed\chatroom-new\ChatRoom\RemoteServer\RemoteServer\bin\Debug\RemoteServer.pdb
+C:\Users\Handoyo\Downloads\Compressed\chatroom-new\ChatRoom\RemoteServer\RemoteServer\bin\Debug\RemoteBase.dll
+C:\Users\Handoyo\Downloads\Compressed\chatroom-new\ChatRoom\RemoteServer\RemoteServer\bin\Debug\RemoteBase.pdb
+C:\Users\Handoyo\Downloads\Compressed\chatroom-new\ChatRoom\RemoteServer\RemoteServer\obj\Debug\RemoteServer.csprojResolveAssemblyReference.cache
+C:\Users\Handoyo\Downloads\Compressed\chatroom-new\ChatRoom\RemoteServer\RemoteServer\obj\Debug\RemoteServer.Form1.resources
+C:\Users\Handoyo\Downloads\Compressed\chatroom-new\ChatRoom\RemoteServer\RemoteServer\obj\Debug\RemoteServer.Properties.Resources.resources
+C:\Users\Handoyo\Downloads\Compressed\chatroom-new\ChatRoom\RemoteServer\RemoteServer\obj\Debug\RemoteServer.csproj.GenerateResource.Cache
+C:\Users\Handoyo\Downloads\Compressed\chatroom-new\ChatRoom\RemoteServer\RemoteServer\obj\Debug\RemoteServer.exe
+C:\Users\Handoyo\Downloads\Compressed\chatroom-new\ChatRoom\RemoteServer\RemoteServer\obj\Debug\RemoteServer.pdb

@@ -1,0 +1,5 @@
+C:\Users\Handoyo\Downloads\Compressed\chatroom-new\ChatRoom\RemoteBase\RemoteBase\bin\Release\RemoteBase.dll
+C:\Users\Handoyo\Downloads\Compressed\chatroom-new\ChatRoom\RemoteBase\RemoteBase\bin\Release\RemoteBase.pdb
+C:\Users\Handoyo\Downloads\Compressed\chatroom-new\ChatRoom\RemoteBase\RemoteBase\obj\Release\RemoteBase.dll
+C:\Users\Handoyo\Downloads\Compressed\chatroom-new\ChatRoom\RemoteBase\RemoteBase\obj\Release\RemoteBase.pdb
+C:\Users\Handoyo\Downloads\Compressed\chatroom-new\ChatRoom\RemoteBase\RemoteBase\obj\Release\RemoteBase.csprojResolveAssemblyReference.cache
